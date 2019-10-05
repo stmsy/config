@@ -1,6 +1,5 @@
 # Local executables
-LOCALBINPATH="/usr/local/bin"
-export PATH="$LOCALBINPATH:$PATH"
+export PATH="/usr/local/bin:$PATH"
 
 # pyenv & pyenv-virtualenv
 eval "$(pyenv init -)"
@@ -8,6 +7,10 @@ eval "$(pyenv virtualenv-init -)"
 
 # rbenv
 eval "$(rbenv init -)"
+
+# nodenv
+PATH="$HOME/.nodenv/bin:$PATH"
+eval "$(nodenv init -)"
 
 # History
 HISTFILE=~/.zsh_history
@@ -66,10 +69,3 @@ function chpwd() {
 # Aliases
 # alias emacs="emacs-26.1"
 alias rm="rm -i"
-
-# Homebrew
-export PATH="/usr/local/opt/bzip2/bin:$PATH"
-export PATH="/usr/local/opt/unzip/bin:$PATH"
-export PATH="/usr/local/opt/libiconv/bin:$PATH"
-export PATH="/usr/local/opt/nss/bin:$PATH"
-export PATH="/usr/local/opt/ncurses/bin:$PATH"
