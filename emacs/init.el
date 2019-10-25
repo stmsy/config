@@ -1,4 +1,5 @@
 ;;; Manage/control package systems
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (require 'package)
 (package-initialize)
 (setq package-archives
