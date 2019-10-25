@@ -1,7 +1,13 @@
 # Local executables
-export PATH="/usr/local/bin:$PATH"
+if [[ "$OSTYPE" =~ "darwin*" ]]; then
+    export PATH="/usr/local/bin:$PATH"
+fi
 
 # pyenv & pyenv-virtualenv
+if [[ "$OSTYPE" =~ "linux*" ]]; then
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+fi
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
@@ -38,7 +44,12 @@ export LC_CTYPE='en_US.UTF-8'
 export LANG='en_US.UTF-8'
 
 # Prompt
-export PS1="macos$ "
+case $OSTYPE in
+    darwin*)
+        export PS1="macos$ ";;
+    linux*)
+        export PS1="debian$ ";;
+esac
 source /opt/git/gitbranch.sh
 SPROMPT="%r is correct? [n,y,a,e]: "
 
@@ -67,5 +78,4 @@ function chpwd() {
     }
 
 # Aliases
-# alias emacs="emacs-26.1"
 alias rm="rm -i"
