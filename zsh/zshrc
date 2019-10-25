@@ -12,10 +12,17 @@ eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
 # rbenv
+if [[ "$OSTYPE" =~ "linux*" ]]; then
+    export RBENV_ROOT="$HOME/.rbenv"
+    export PATH="$RBENV_ROOT/bin:$PATH"
+fi
 eval "$(rbenv init -)"
 
 # nodenv
-PATH="$HOME/.nodenv/bin:$PATH"
+if [[ "$OSTYPE" =~ "linux*" ]]; then
+    export NODENV_ROOT="$HOME/.nodenv"
+    export PATH="$NODENV_ROOT/bin:$PATH"
+fi
 eval "$(nodenv init -)"
 
 # History
