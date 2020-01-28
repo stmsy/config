@@ -86,3 +86,4 @@ function chpwd() {
 
 # Aliases
 alias rm="rm -i"
+alias ipython="ipython --no-banner"
