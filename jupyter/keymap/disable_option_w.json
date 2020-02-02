@@ -1,0 +1,12 @@
+{
+    "shortcuts": [
+        {
+            "command": "application:close",
+            "keys": [
+                "Alt W"
+            ],
+            "selector": ".jp-Activity",
+            "disabled": true
+        }
+    ]
+}
