@@ -25,6 +25,18 @@ if [[ "$OSTYPE" =~ "linux*" ]]; then
 fi
 eval "$(nodenv init -)"
 
+# Go
+export GOPATH="$HOME/go"
+export GOENV_ROOT="$HOME/.goenv"
+export PATH="$GOENV_ROOT/bin:$PATH"
+eval "$(goenv init -)"
+export PATH="$GOROOT/bin:$PATH"
+export PATH="$PATH:$GOPATH/bin"
+
+# Clang 4
+export PATH="/usr/local/clang4/bin:$PATH"
+
+
 # History
 HISTFILE=~/.zsh_history
 HISTSIZE=6000000
