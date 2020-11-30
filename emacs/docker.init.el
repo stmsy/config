@@ -1,11 +1,11 @@
 ;;; Manage/control package systems
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (require 'package)
-(package-initialize)
 (setq package-archives
   '(("gnu" . "http://elpa.gnu.org/packages/")
     ("melpa" . "http://melpa.org/packages/")
     ("org" . "http://orgmode.org/elpa/")))
+(package-initialize)
 
 (defun require-package (package &optional min-version no-refresh)
   "Install given PACKAGE, optionally requiring MIN-VERSION.
@@ -136,17 +136,17 @@ re-downloaded in order to locate PACKAGE."
 ;; (setq python-shell-interpreter "ipython"
 ;;   python-shell-interpreter-args "-i")
 ;; jedi
-(require 'epc)
-(require 'python)
+(require-package 'epc)
+(require-package 'python)
 ;; (setenv "PYTHONPATH" "/Users/msato/.pyenv/versions/py36/lib/python3.6/site-packages")
-(require 'jedi)
+(require-package 'jedi)
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
 ; (define-key python-mode-map "\C-ct" 'jedi:goto-definition)
 ; (define-key python-mode-map "\C-cb" 'jedi:goto-definition-pop-marker)
 ; (define-key python-mode-map "\C-cr" 'helm-jedi-related-names)
 ;; auto-pep8
-(require 'py-autopep8)
+(require-package 'py-autopep8)
 (setq py-autopep8-options '("--max-line-length=79"))
 ;; (add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
 ;; autopair
@@ -167,7 +167,7 @@ re-downloaded in order to locate PACKAGE."
 (add-hook 'js-mode-hook 'js-mode-hook)
 
 ;;; Web
-(require 'web-mode)
+(require-package 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
@@ -236,15 +236,15 @@ re-downloaded in order to locate PACKAGE."
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
 ;;; Git
-;; (require 'magit)
+;; (require-package 'magit)
 ;; (setq magit-view-git-manual-method 'man)
 
 ;;; Docker
-(require 'dockerfile-mode)
+(require-package 'dockerfile-mode)
 (add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
 
 ;;; YAML
-(require 'yaml-mode)
+(require-package 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.ya?ml$" . yaml-mode))
 (define-key yaml-mode-map "\C-m" 'newline-and-indent)
 
