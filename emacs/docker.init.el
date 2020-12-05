@@ -107,13 +107,15 @@ re-downloaded in order to locate PACKAGE."
 
 ;;; Enable auto-completion
 (add-to-list 'load-path "~/.emacs.d/site-lisp/anything-config/")
-
 (require 'anything)
 ;; (require 'anything-config)
 (require 'anything-match-plugin)
-(require 'auto-complete)
+(require-package 'auto-complete)
 (require 'auto-complete-config)
 (ac-config-default)
+
+;;; Enable autopair
+(require-package 'autopair)
 
 ;;; Set default spell checker
 (setq-default ispell-program-name "aspell")
@@ -246,7 +248,6 @@ re-downloaded in order to locate PACKAGE."
 ;;; YAML
 (require-package 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.ya?ml$" . yaml-mode))
-(define-key yaml-mode-map "\C-m" 'newline-and-indent)
 
 (put 'set-goal-column 'disabled nil)
 (put 'upcase-region 'disabled nil)
