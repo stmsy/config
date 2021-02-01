@@ -127,6 +127,7 @@ re-downloaded in order to locate PACKAGE."
 ;;; Python
 ;; Set default Python indentation
 ;; python-mode
+(require-package 'python-mode)
 ; (setq-default c-basic-offset 4)
 (setq-default python-indent-guess-indent-offset nil)
 (autoload 'python-mode "python-mode" "Python Mode" t)
@@ -140,7 +141,7 @@ re-downloaded in order to locate PACKAGE."
 ;; jedi
 (require-package 'epc)
 (require-package 'python)
-;; (setenv "PYTHONPATH" "/Users/msato/.pyenv/versions/py36/lib/python3.6/site-packages")
+;; (setenv "PYTHONPATH" "~/.pyenv/versions/py36/lib/python3.6/site-packages")
 (require-package 'jedi)
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
