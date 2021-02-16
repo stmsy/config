@@ -1,4 +1,6 @@
 ;;; Manage/control package systems
+(require 'gnu-elpa-keyring-update)
+(gnu-elpa-keyring-update)
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (require 'package)
 (setq package-archives
