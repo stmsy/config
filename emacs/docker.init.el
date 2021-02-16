@@ -1,12 +1,11 @@
 ;;; Manage/control package systems
-(require 'gnu-elpa-keyring-update)
-(gnu-elpa-keyring-update)
+(setq package-check-signature nil)
 (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 (require 'package)
 (setq package-archives
-  '(("gnu" . "http://elpa.gnu.org/packages/")
-    ("melpa" . "http://melpa.org/packages/")
-    ("org" . "http://orgmode.org/elpa/")))
+  '(("gnu" . "https://elpa.gnu.org/packages/")
+    ("melpa" . "https://melpa.org/packages/")
+    ("org" . "https://orgmode.org/elpa/")))
 (package-initialize)
 
 (defun require-package (package &optional min-version no-refresh)
@@ -35,6 +34,10 @@ re-downloaded in order to locate PACKAGE."
     (error
       (message "Couldn't install optional package `%s': %S" package err)
       nil)))
+
+;;; Enable to update the GPG keys
+(require-package 'gnu-elpa-keyring-update)
+(gnu-elpa-keyring-update)
 
 ;;; Add path for customized config .el files
 ;; (add-to-list 'load-path "~/.emacs.d/site-lisp")
