@@ -24,12 +24,7 @@ export LC_CTYPE='en_US.UTF-8'
 export LANG='en_US.UTF-8'
 
 # Prompt
-case $OSTYPE in
-    darwin*)
-        export PS1="macos$ ";;
-    linux*)
-        export PS1="debian$ ";;
-esac
+export PS1="docker$ "
 source /opt/git/gitbranch.sh
 SPROMPT="%r is correct? [n,y,a,e]: "
 
