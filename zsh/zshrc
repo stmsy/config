@@ -1,41 +1,40 @@
 # Local executables
 if [[ "$OSTYPE" =~ "darwin*" ]]; then
-    export PATH="/usr/local/bin:$PATH"
+   export PATH="/usr/local/bin:$PATH"
 fi
 
-# pyenv & pyenv-virtualenv
-if [[ "$OSTYPE" =~ "linux*" ]]; then
-    export PYENV_ROOT="$HOME/.pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH"
-fi
-eval "$(pyenv init -)"
+# anyenv
+eval "$(anyenv init -)"
+
+# Python
 eval "$(pyenv virtualenv-init -)"
 
-# rbenv
-if [[ "$OSTYPE" =~ "linux*" ]]; then
-    export RBENV_ROOT="$HOME/.rbenv"
-    export PATH="$RBENV_ROOT/bin:$PATH"
-fi
-eval "$(rbenv init -)"
-
-# nodenv
-if [[ "$OSTYPE" =~ "linux*" ]]; then
-    export NODENV_ROOT="$HOME/.nodenv"
-    export PATH="$NODENV_ROOT/bin:$PATH"
-fi
-eval "$(nodenv init -)"
+# R
+# export R_HOME="/usr/local/lib/R"
+# export R_DEFAULT_DEVICE="quartz"
 
 # Go
 export GOPATH="$HOME/go"
 export GOENV_ROOT="$HOME/.goenv"
-export PATH="$GOENV_ROOT/bin:$PATH"
+# export PATH="$GOENV_ROOT/bin:$PATH"
 eval "$(goenv init -)"
-export PATH="$GOROOT/bin:$PATH"
-export PATH="$PATH:$GOPATH/bin"
+# export PATH="$GOROOT/bin:$PATH"
+# export PATH="$PATH:$GOPATH/bin"
 
 # Clang 4
 export PATH="/usr/local/clang4/bin:$PATH"
 
+# icu4c
+export PATH="/usr/local/opt/icu4c/bin:$PATH"
+export PATH="/usr/local/opt/icu4c/sbin:$PATH"
+
+# OpenBLAS
+export LDFLAGS="-L/usr/local/opt/openblas/lib"
+export CPPFLAGS="-I/usr/local/opt/openblas/include"
+
+# zlib
+export LDFLAGS="-L/usr/local/opt/zlib/lib"
+export CPPFLAGS="-I/usr/local/opt/zlib/include"
 
 # History
 HISTFILE=~/.zsh_history
@@ -94,8 +93,13 @@ esac
 echo -ne "\033]0;$(pwd | rev | awk -F \/ '{print "/"$1}'| rev)\007"
 function chpwd() {
     echo -ne "\033]0;$(pwd | rev | awk -F \/ '{print "/"$1}'| rev)\007"
-    }
+}
 
 # Aliases
 alias rm="rm -i"
 alias ipython="ipython --no-banner"
+
+# gitignore.io
+function gi() {
+    curl -sLw n https://www.toptal.com/developers/gitignore/api/$@ ;
+}
