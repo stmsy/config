@@ -32,6 +32,11 @@ This function should only modify configuration layer settings."
 
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
+   ;; ----------------------------------------------------------------
+   ;; Example of useful layers you may want to use right away.
+   ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
+   ;; `M-m f e R' (Emacs style) to install them.
+   ;; ----------------------------------------------------------------
    '(csv
      rust
      markdown
@@ -40,16 +45,14 @@ This function should only modify configuration layer settings."
      javascript
      html
      python
-     ;; ----------------------------------------------------------------
-     ;; Example of useful layers you may want to use right away.
-     ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
-     ;; `M-m f e R' (Emacs style) to install them.
-     ;; ----------------------------------------------------------------
      auto-completion
      ;; better-defaults
+     c-c++
      emacs-lisp
+     ess
      git
      helm
+     ipython-notebook
      ;; lsp
      markdown
      multiple-cursors
@@ -59,9 +62,8 @@ This function should only modify configuration layer settings."
      ;;        shell-default-position 'bottom)
      spell-checking
      syntax-checking
-     version-control
      treemacs
-     ipython-notebook)
+     version-control)
 
 
    ;; List of additional packages that will be installed without being wrapped
@@ -230,7 +232,7 @@ It should only modify the values of Spacemacs settings."
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    ;; dotspacemacs-themes '(zenburn)
-   dotspacemacs-themes '(spacemacs-light zenburn)
+   dotspacemacs-themes '(zenburn spacemacs-light)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
