@@ -34,17 +34,26 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layers
    ;; ----------------------------------------------------------------
    ;; Example of useful layers you may want to use right away.
-   ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
-   ;; `M-m f e R' (Emacs style) to install them.
+   ;; Uncomment some layer names and press `SPC f e R' (markdown
+   ;; Vim style) or `M-m f e R' (Emacs style) to install them.
    ;; ----------------------------------------------------------------
    '(csv
      rust
      markdown
+     ;; (markdown :variables
+     ;;   	       markdown-live-preview-engine 'vmd)
      sql
      yaml
      javascript
      html
      python
+     (python :variables
+             python-backend 'anaconda
+             python-formatter 'yapf
+             python-format-on-save nil
+             python-sort-imports-on-save t
+             python-pyenv-activate t
+             python-test-runner 'pytest)
      auto-completion
      ;; better-defaults
      c-c++
@@ -56,7 +65,7 @@ This function should only modify configuration layer settings."
      ;; lsp
      markdown
      multiple-cursors
-     ;; org
+     org
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
@@ -74,7 +83,7 @@ This function should only modify configuration layer settings."
    ;; `dotspacemacs/user-config'. To use a local version of a package, use the
    ;; `:location' property: '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(jedi)
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -233,6 +242,7 @@ It should only modify the values of Spacemacs settings."
    ;; with 2 themes variants, one dark and one light)
    ;; dotspacemacs-themes '(zenburn)
    dotspacemacs-themes '(zenburn spacemacs-light)
+   ;; dotspacemacs-themes '(sanityinc-solarized-dark sanityinc-solarized-light)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -364,7 +374,7 @@ It should only modify the values of Spacemacs settings."
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's active or selected.
    ;; Transparency can be toggled through `toggle-transparency'. (default 90)
-   dotspacemacs-active-transparency 90
+   dotspacemacs-active-transparency 80
 
    ;; A value from the range (0..100), in increasing opacity, which describes
    ;; the transparency level of a frame when it's inactive or deselected.
@@ -409,7 +419,7 @@ It should only modify the values of Spacemacs settings."
    ;;   :size-limit-kb 1000)
    ;; When used in a plist, `visual' takes precedence over `relative'.
    ;; (default nil)
-   dotspacemacs-line-numbers nil
+   dotspacemacs-line-numbers t
 
    ;; Code folding method. Possible values are `evil', `origami' and `vimish'.
    ;; (default 'evil)
@@ -553,7 +563,17 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
   ;; Transparency
-  (spacemacs/enable-transparency))
+  (spacemacs/enable-transparency)
+
+  ;; White space after line number
+  (unless (display-graphic-p)
+    (setq linum-format "%3s "))
+
+  ;; Python mode
+  (add-hook 'python-mode-hook
+            (lambda ()
+            '(flycheck-add-next-checker 'python-flake8)
+            'jedi:setup)))
 
 
 ;; Do not write anything past this comment. This is where Emacs will
