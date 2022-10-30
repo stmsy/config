@@ -38,12 +38,31 @@ This function should only modify configuration layer settings."
    ;; Vim style) or `M-m f e R' (Emacs style) to install them.
    ;; ----------------------------------------------------------------
    '(;; better-defaults
+     auto-completion
+  	 (auto-completion :variables
+					  auto-completion-tab-key-behavior 'complete
+                      company-emoji-insert-unicode nil)
      c-c++
      csv
      docker
+     emacs-
+	 lisp
+     emoji
      ess
+     git
+     (git :variables
+          git-enable-magit-delta-plugin t
+          git-enable-magit-gitflow-plugin t)
+     geolocation
+     (geolocation :variables
+                  geolocation-enable-automatic-theme-changer nil
+                  geolocation-enable-location-service t
+                  geolocation-enable-weather-forecast t)
      helm
      html
+     (html :variables web-fmt-tool 'web-beautify)
+     ipython-notebook
+     ;; japanese
      java
      (java :variables
            java-backend 'meghanada)
@@ -52,7 +71,13 @@ This function should only modify configuration layer settings."
      (json :variables
            js-indent-level 2
            json-fmt-tool 'web-beautify)
-     ;; python
+     latex
+     ;; lsp
+     markdown
+     ;; (markdown :variables
+     ;;           markdown-live-preview-engine 'vmd)
+     multiple-cursors
+     python
      (python :variables
              python-backend 'anaconda
              ;; python-formatter 'yapf
@@ -61,38 +86,31 @@ This function should only modify configuration layer settings."
              python-pyenv-activate t
              ;; python-pipenv-activate t
              python-test-runner 'pytest)
-     auto-completion
-     emacs-lisp
-     ess
-     git
-     (git :variables
-          git-enable-magit-delta-plugin t
-          git-enable-magit-gitflow-plugin t)
-     ipython-notebook
-     ;; lsp
-     markdown
-     ;; (markdown :variables
-     ;;           markdown-live-preview-engine 'vmd)
-     multiple-cursors
      org
      osx
      pdf
+     prettier
      rust
-     shell-scripts
+     ;; shell-scripts
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
      spell-checking
+     (spell-checking :variables spell-checking-enable-by-default nil)
      sql
      (sql :variables
           sql-capitalize-keywords t
-          sql-auto-indent nil
+          sql-auto-indent t
           sqlind-basic-offset 4
           sql-capitalize-keywords-blacklist '("name" "varchar")
           sql-backend 'lsp
           sql-lsp-sqls-workspace-config-path 'workspace)
      syntax-checking
+     tabs
      treemacs
+	 ;; unicode-fonts
+	 ;; (unicode-fonts :variables unicode-fonts-force-multi-color-on-mac t)
+     web-beautify
      yaml
      version-control)
 
@@ -228,7 +246,8 @@ It should only modify the values of Spacemacs settings."
    ;; number is the project limit and the second the limit on the recent files
    ;; within a project.
    dotspacemacs-startup-lists '((recents . 5)
-                                (projects . 7))
+                                (projects . 5))
+   ;; dotspacemacs-startup-lists nil
 
    ;; True if the home buffer should respond to resize events. (default t)
    dotspacemacs-startup-buffer-responsive t
@@ -553,7 +572,12 @@ It should only modify the values of Spacemacs settings."
    dotspacemacs-home-shorten-agenda-source nil
 
    ;; If non-nil then byte-compile some of Spacemacs files.
-   dotspacemacs-byte-compile nil))
+   dotspacemacs-byte-compile nil
+
+   ;; Display file icons next to entries in Spacemacs home buffer.
+   ;; Make sure to install `all-the-icons' manually from a distribution's
+   ;; package manager, or via M-x all-the-icons-install-fonts
+   dotspacemacs-startup-buffer-show-icons t))
 
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
@@ -585,6 +609,48 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+  (use-package emacs
+    ;; Display function names
+    :config (which-function-mode +1)
+
+	;; Set a Japanese locale (May not be necassary
+    (set-language-environment "Japanese")
+    (prefer-coding-system 'utf-8)
+	(set-file-name-coding-system 'utf-8)
+	(set-keyboard-coding-system 'utf-8)
+	(set-terminal-coding-system 'utf-8)
+	(set-default 'buffer-file-coding-system 'utf-8)
+    (set-charset-priority 'ascii
+						  'unicode)
+    (set-coding-system-priority 'utf-8))
+
+  (require 'all-the-icons)
+  ;; unicode-fonts
+  ;; (require 'font-utils)
+  ;; (font-utils-exists-p "Courier")
+  ;; (require 'ucs-utils)
+  ;; (ucs-utils-char "Middle Dot"         ; character to return
+  ;;                 ?.                   ; fallback if unavailable
+  ;;                 'char-displayable-p) ; test for character to pass
+  ;; (ucs-utils-first-existing-char '("White Bullet"
+  ;;                                  "Bullet Operator"
+  ;;                                  "Circled Bullet"
+  ;;                                  "Middle Dot"
+  ;;                                  ?.) 'cdp)
+  ;; (ucs-utils-string "Horizontal Ellipsis" '[["..."]])
+  ;; (require 'list-utils)
+  ;; (list-utils-flatten '(1 2 (3 4 (5 6 7))))  ;; '(1 2 3 4 5 6 7)
+  ;; (list-utils-depth '(1 2 (3 4 (5 6 7))))    ;; 3
+  ;; (let ((cyclic-list '(1 2 3 4 5 6 7)))
+  ;; 	(nconc cyclic-list (cdr cyclic-list))
+  ;; 	(list-utils-make-linear-inplace cyclic-list))  ;; '(1 2 3 4 5 6 7)
+  ;; (list-utils-cyclic-p '(1 2 3))  ;; nil
+  ;; (list-utils-plist-del '(:one 1 :two 2 :three 3) :two)  ;; '(:one 1 :three 3)
+
+  ;; Enable Tab key
+  (setq-default indent-tabs-mode t)
+  (setq-default tab-width 4)
+
   ;; Transparency
   ;; (spacemacs/enable-transparency)
   (defun user-custom//enable-frame-transparency (frame)
@@ -606,11 +672,15 @@ before packages are loaded."
   (define-key global-map (kbd "C-x n") 'windmove-down)
   (define-key global-map (kbd "C-x l") 'windmove-right)
   (define-key global-map (kbd "C-x h") 'windmove-left)
+  ;; Define C-x-{+,-} to move to next/previous buffer
+  (define-key global-map (kbd "H-M-n") 'next-buffer)
+  (define-key global-map (kbd "H-M-p") 'previous-buffer)
 
   ;; macOS
   (global-set-key (kbd-mac-command "x") nil)
   ;; (global-set-key (kbd-mac-command "c") nil)
   ;; (global-set-key (kbd-mac-command "v") nil)
+  (setq powerline-image-apple-rgb t)
 
   ;; Python mode
   (add-hook 'python-mode-hook
@@ -642,6 +712,14 @@ before packages are loaded."
   ;;             (setq sqlind-indentation-offsets-alist
   ;;                   my-sql-indentation-offsets-alist)))
 
+  ;; Geolocation
+  (setq calendar-location-name "Fukuoka, Japan"
+        calendar-latitude 33.5573
+        calendar-longitude 130.1955
+        sunshine-appid "1b2697d2c68bd4290e11c97a0ed4f60f"
+        sunshie-units 'metric
+        sunshine-show-icons t)
+
   ;; direnv
   ;; (use-package direnv
   ;;   :demand t
@@ -672,28 +750,29 @@ This function is called at the very end of Spacemacs initialization."
  '(nrepl-message-colors
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
  '(package-selected-packages
-   '(pydoc lsp-ui lsp-origami origami lsp-java helm-lsp ccls vmd-mode sqlup-mode pdf-view-restore pdf-tools counsel-tramp insert-shebang flycheck-bashate fish-mode company-shell dockerfile-mode docker tablist docker-tramp aio direnv mvn meghanada maven-test-mode groovy-mode groovy-imports pcache ein helm-ispell yasnippet-snippets treemacs-magit smeargle helm-gitignore helm-git-grep helm-company helm-c-yasnippet gitignore-templates gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ fringe-helper git-gutter+ fuzzy forge yaml magit ghub closql emacsql-sqlite emacsql treepy magit-section git-commit with-editor flyspell-correct-helm flyspell-correct flycheck-rust flycheck-pos-tip company-web web-completion-data browse-at-remote auto-yasnippet auto-dictionary ac-ispell auto-complete yaml-mode tern npm-mode nodejs-repl livid-mode skewer-mode js2-refactor yasnippet multiple-cursors js2-mode js-doc import-js grizzl add-node-modules-path yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry transient pippel pipenv pyvenv pip-requirements nose lsp-python-ms lsp-pyright live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-gtags helm-cscope xcscope ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode cython-mode counsel-gtags counsel swiper ivy company-anaconda company blacken anaconda-mode pythonic ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line))
+   '(all-the-icons-ivy-rich all-the-icons-ivy all-the-icons-dired unicode-fonts ucs-utils font-utils persistent-soft list-utils csv-mode avy-migemo ddskk cdb ccc evil-tutor-ja japanese-holidays migemo pangu-spacing company-emoji emoji-cheat-sheet-plus emojify osx-location rase sunshine theme-changer centaur-tabs lsp-docker lsp-latex company-reftex math-symbol-lists company-auctex auctex pydoc lsp-ui lsp-origami origami lsp-java helm-lsp ccls vmd-mode sqlup-mode pdf-view-restore pdf-tools counsel-tramp insert-shebang flycheck-bashate fish-mode company-shell dockerfile-mode docker tablist docker-tramp aio direnv mvn meghanada maven-test-mode groovy-mode groovy-imports pcache ein helm-ispell yasnippet-snippets treemacs-magit smeargle helm-gitignore helm-git-grep helm-company helm-c-yasnippet gitignore-templates gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ fringe-helper git-gutter+ fuzzy forge yaml magit ghub closql emacsql-sqlite emacsql treepy magit-section git-commit with-editor flyspell-correct-helm flyspell-correct flycheck-rust flycheck-pos-tip company-web web-completion-data browse-at-remote auto-yasnippet auto-dictionary ac-ispell auto-complete yaml-mode tern npm-mode nodejs-repl livid-mode skewer-mode js2-refactor yasnippet multiple-cursors js2-mode js-doc import-js grizzl add-node-modules-path yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry transient pippel pipenv pyvenv pip-requirements nose lsp-python-ms lsp-pyright live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-gtags helm-cscope xcscope ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode cython-mode counsel-gtags counsel swiper ivy company-anaconda company blacken anaconda-mode pythonic ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line))
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map
    '((20 . "#BC8383")
-     (40 . "#CC9393")
-     (60 . "#DFAF8F")
-     (80 . "#D0BF8F")
-     (100 . "#E0CF9F")
-     (120 . "#F0DFAF")
-     (140 . "#5F7F5F")
-     (160 . "#7F9F7F")
-     (180 . "#8FB28F")
-     (200 . "#9FC59F")
-     (220 . "#AFD8AF")
-     (240 . "#BFEBBF")
-     (260 . "#93E0E3")
-     (280 . "#6CA0A3")
-     (300 . "#7CB8BB")
-     (320 . "#8CD0D3")
-     (340 . "#94BFF3")
-     (360 . "#DC8CC3")))
- '(vc-annotate-very-old-color "#DC8CC3"))
+	 (40 . "#CC9393")
+	 (60 . "#DFAF8F")
+	 (80 . "#D0BF8F")
+	 (100 . "#E0CF9F")
+	 (120 . "#F0DFAF")
+	 (140 . "#5F7F5F")
+	 (160 . "#7F9F7F")
+	 (180 . "#8FB28F")
+	 (200 . "#9FC59F")
+	 (220 . "#AFD8AF")
+	 (240 . "#BFEBBF")
+	 (260 . "#93E0E3")
+	 (280 . "#6CA0A3")
+	 (300 . "#7CB8BB")
+	 (320 . "#8CD0D3")
+	 (340 . "#94BFF3")
+	 (360 . "#DC8CC3")))
+ '(vc-annotate-very-old-color "#DC8CC3")
+ '(warning-suppress-types '((use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
