@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>AllowClipboardAccess</key>
+	<true/>
 	<key>Default Bookmark Guid</key>
 	<string>0346A33A-AA0A-42EB-8A22-F208A4452BF0</string>
 	<key>GlobalKeyMap</key>
@@ -733,7 +735,7 @@
 			<key>Terminal Type</key>
 			<string>xterm-256color</string>
 			<key>Transparency</key>
-			<real>0.0</real>
+			<real>0.10141997641705452</real>
 			<key>Unlimited Scrollback</key>
 			<false/>
 			<key>Use Bold Font</key>
@@ -758,6 +760,8 @@
 	<false/>
 	<key>OpenTmuxWindowsIn</key>
 	<integer>1</integer>
+	<key>PMPrintingExpandedStateForPrint2</key>
+	<false/>
 	<key>PointerActions</key>
 	<dict>
 		<key>Button,1,1,,</key>
@@ -791,6 +795,8 @@
 			<string>kNextWindowPointerAction</string>
 		</dict>
 	</dict>
+	<key>Print In Black And White</key>
+	<true/>
 	<key>QuitWhenAllWindowsClosed</key>
 	<true/>
 	<key>RightCommand</key>

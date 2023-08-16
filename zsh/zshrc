@@ -30,6 +30,9 @@ eval "$(goenv init -)"
 # export PATH="$GOROOT/bin:$PATH"
 # export PATH="$PATH:$GOPATH/bin"
 
+# OpenSSL
+export PATH="/usr/local/opt/openssl@3/bin:$PATH"
+
 # Clang 4
 export PATH="/usr/local/clang4/bin:$PATH"
 
@@ -44,8 +47,6 @@ export CPPFLAGS="-I/usr/local/opt/openblas/include"
 # zlib
 export LDFLAGS="-L/usr/local/opt/zlib/lib"
 export CPPFLAGS="-I/usr/local/opt/zlib/include"
-
-# pkg-config
 export PKG_CONFIG_PATH="/usr/local/opt/zlib/lib/pkgconfig"
 
 # History
@@ -115,7 +116,7 @@ alias vpn-connect="networksetup -connectpppoeservice"
 alias vpn-disconnect="networksetup -disconnectpppoeservice"
 
 # gitignore.io
-function gi() {
+function git-ignore() {
     curl -sLw n https://www.toptal.com/developers/gitignore/api/$@ ;
 }
 
@@ -133,3 +134,28 @@ if [ -f '/opt/gcp/google-cloud-sdk/completion.zsh.inc' ]; then . '/opt/gcp/googl
 # Secretive
 export SSH_AUTH_SOCK=/Users/stmsy/Library/Containers/com.maxgoedjen.Secretive.SecretAgent/Data/socket.ssh
 
+# Prompt
+function gcloud-activate() {
+  name="$1"
+  project="$2"
+  echo "gcloud config configurations activate \"${name}\""
+  gcloud config configurations activate "${name}"
+}
+
+function gcloud-complete() {
+  _values $(gcloud config configurations list | awk '{print $1}')
+}
+
+function gcloud-project() {
+  name="$1"
+  if [ -z "$name" ]; then
+    line=$(gcloud config configurations list | peco)
+    name=$(echo "${line}" | awk '{print $1}')
+  else
+    line=$(gcloud config configurations list | grep "$name")
+  fi
+  project=$(echo "${line}" | awk '{print $4}')
+  gcloud-activate "${name}" "${project}"
+}
+
+compdef gcloud-complete gcloud-project
