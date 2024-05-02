@@ -34,12 +34,13 @@ This function should only modify configuration layer settings."
    dotspacemacs-configuration-layers
    ;; ----------------------------------------------------------------
    ;; Example of useful layers you may want to use right away.
-   ;; Uncomment some layer names and press `SPC f e R' (markdown
+   ;; Uncomment some layer names and press `SPC f e R' (
    ;; Vim style) or `M-m f e R' (Emacs style) to install them.
    ;; ----------------------------------------------------------------
    '(;; better-defaults
      auto-completion
   	 (auto-completion :variables
+                      spacemacs-default-company-backends '(company-files company-capf)
 					  auto-completion-tab-key-behavior 'complete
                       company-emoji-insert-unicode nil)
      c-c++
@@ -57,21 +58,27 @@ This function should only modify configuration layer settings."
                   geolocation-enable-automatic-theme-changer nil
                   geolocation-enable-location-service t
                   geolocation-enable-weather-forecast t)
+     graphql
      helm
      html
-     (html :variables web-fmt-tool 'web-beautify)
+     (html :variables
+           css-enable-lsp t
+           less-enable-lsp t
+           scss-enable-lsp t
+           html-enable-lsp t
+           web-fmt-tool 'web-beautify)
      ipython-notebook
      ;; japanese
-     java
-     (java :variables
-           java-backend 'meghanada)
+     ;; java
+     ;; (java :variables
+     ;;       java-backend 'meghanada)
      javascript
      json
      (json :variables
            js-indent-level 2
            json-fmt-tool 'web-beautify)
      latex
-     ;; lsp
+     lsp
      markdown
      ;; (markdown :variables
      ;;           markdown-live-preview-engine 'vmd)
@@ -109,12 +116,17 @@ This function should only modify configuration layer settings."
      syntax-checking
      tabs
      treemacs
-	   ;; unicode-fonts
+     typescript
+     (typescript :variables
+                 typescript-indent-level 2
+                 typescript-insert-and-indent t)
+     ;; unicode-fonts
    	 ;; (unicode-fonts :variables unicode-fonts-force-multi-color-on-mac t)
+     vue
+     (vue :variables vue-backend 'dumb)
      web-beautify
      yaml
      version-control)
-
 
    ;; List of additional packages that will be installed without being wrapped
    ;; in a layer (generally the packages are installed only and should still be
@@ -677,7 +689,6 @@ before packages are loaded."
     :ensure t
     :config
     (add-hook 'python-mode-hook 'importmagic-mode))
-  (add-hook 'python-mode-hook 'importmagic-mode)
   ;; Custom Python mode
   ;; (setq-default dotspacemacs-configuration-layers '(elpy))
 
@@ -707,6 +718,14 @@ before packages are loaded."
 
   ;; Java
   (setq java-indent-level 4)
+
+  ;; Web
+  (defun custom-web-mode-hook ()
+    "Hooks for Web mode."
+    (setq web-mode-markup-indent-offset 2)
+    (setq web-mode-css-indent-offset 2)
+    (setq web-mode-code-indent-offset 2))
+  (add-hook 'web-mode-hook  'custom-web-mode-hook)
 
   ;; Geolocation
   (setq calendar-location-name "Fukuoka, Japan"
@@ -746,7 +765,7 @@ This function is called at the very end of Spacemacs initialization."
  '(nrepl-message-colors
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
  '(package-selected-packages
-   '(envrc wfnames consult sql-indent elisp-def package-lint inspector code-cells load-env-vars pylookup all-the-icons-ivy-rich all-the-icons-ivy all-the-icons-dired unicode-fonts ucs-utils font-utils persistent-soft list-utils csv-mode avy-migemo ddskk cdb ccc evil-tutor-ja japanese-holidays migemo pangu-spacing company-emoji emoji-cheat-sheet-plus emojify osx-location rase sunshine theme-changer centaur-tabs lsp-docker lsp-latex company-reftex math-symbol-lists company-auctex auctex pydoc lsp-ui lsp-origami origami lsp-java helm-lsp ccls vmd-mode sqlup-mode pdf-view-restore pdf-tools counsel-tramp insert-shebang flycheck-bashate fish-mode company-shell dockerfile-mode docker tablist docker-tramp aio direnv mvn meghanada maven-test-mode groovy-mode groovy-imports pcache ein helm-ispell yasnippet-snippets treemacs-magit smeargle helm-gitignore helm-git-grep helm-company helm-c-yasnippet gitignore-templates gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ fringe-helper git-gutter+ fuzzy forge yaml magit ghub closql emacsql-sqlite emacsql treepy magit-section git-commit with-editor flyspell-correct-helm flyspell-correct flycheck-rust flycheck-pos-tip company-web web-completion-data browse-at-remote auto-yasnippet auto-dictionary ac-ispell auto-complete yaml-mode tern npm-mode nodejs-repl livid-mode skewer-mode js2-refactor yasnippet multiple-cursors js2-mode js-doc import-js grizzl add-node-modules-path yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry transient pippel pipenv pyvenv pip-requirements nose lsp-python-ms lsp-pyright live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-gtags helm-cscope xcscope ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode cython-mode counsel-gtags counsel swiper ivy company-anaconda company blacken anaconda-mode pythonic ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line))
+   '(graphql-mode tide typescript-mode envrc wfnames consult sql-indent elisp-def package-lint inspector code-cells load-env-vars pylookup all-the-icons-ivy-rich all-the-icons-ivy all-the-icons-dired unicode-fonts ucs-utils font-utils persistent-soft list-utils csv-mode avy-migemo ddskk cdb ccc evil-tutor-ja japanese-holidays migemo pangu-spacing company-emoji emoji-cheat-sheet-plus emojify osx-location rase sunshine theme-changer centaur-tabs lsp-docker lsp-latex company-reftex math-symbol-lists company-auctex auctex pydoc lsp-ui lsp-origami origami lsp-java helm-lsp ccls vmd-mode sqlup-mode pdf-view-restore pdf-tools counsel-tramp insert-shebang flycheck-bashate fish-mode company-shell dockerfile-mode docker tablist docker-tramp aio direnv mvn meghanada maven-test-mode groovy-mode groovy-imports pcache ein helm-ispell yasnippet-snippets treemacs-magit smeargle helm-gitignore helm-git-grep helm-company helm-c-yasnippet gitignore-templates gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ fringe-helper git-gutter+ fuzzy forge yaml magit ghub closql emacsql-sqlite emacsql treepy magit-section git-commit with-editor flyspell-correct-helm flyspell-correct flycheck-rust flycheck-pos-tip company-web web-completion-data browse-at-remote auto-yasnippet auto-dictionary ac-ispell auto-complete yaml-mode tern npm-mode nodejs-repl livid-mode skewer-mode js2-refactor yasnippet multiple-cursors js2-mode js-doc import-js grizzl add-node-modules-path yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry transient pippel pipenv pyvenv pip-requirements nose lsp-python-ms lsp-pyright live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-gtags helm-cscope xcscope ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode cython-mode counsel-gtags counsel swiper ivy company-anaconda company blacken anaconda-mode pythonic ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line))
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map
    '((20 . "#BC8383")
