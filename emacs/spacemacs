@@ -39,9 +39,9 @@ This function should only modify configuration layer settings."
    ;; ----------------------------------------------------------------
    '(;; better-defaults
      auto-completion
-  	 (auto-completion :variables
+     (auto-completion :variables
                       spacemacs-default-company-backends '(company-files company-capf)
-					  auto-completion-tab-key-behavior 'complete
+                      auto-completion-tab-key-behavior 'complete
                       company-emoji-insert-unicode nil)
      c-c++
      csv
@@ -58,6 +58,8 @@ This function should only modify configuration layer settings."
                   geolocation-enable-automatic-theme-changer nil
                   geolocation-enable-location-service t
                   geolocation-enable-weather-forecast t)
+     go
+     (go :variables go-backend 'lsp)
      graphql
      helm
      html
@@ -83,6 +85,8 @@ This function should only modify configuration layer settings."
      ;; (markdown :variables
      ;;           markdown-live-preview-engine 'vmd)
      multiple-cursors
+     ;; org
+     osx
      python
      (python :variables
              python-backend 'anaconda
@@ -92,14 +96,12 @@ This function should only modify configuration layer settings."
              python-pyenv-activate t
              ;; python-pipenv-activate t
              python-test-runner 'pytest)
-     ;; org
-     osx
      pdf
      prettier
      rust
      ;; shell-scripts
-   	 ;; (shell-scripts :variables shell-scripts-format-on-save t
-     ;;            	           shell-scripts-backend nil)
+     ;; (shell-scripts :variables shell-scripts-format-on-save t
+     ;;                        shell-scripts-backend nil)
      ;; (shell :variables
      ;;        shell-default-height 30
      ;;        shell-default-position 'bottom)
@@ -115,13 +117,17 @@ This function should only modify configuration layer settings."
           sql-lsp-sqls-workspace-config-path 'workspace)
      syntax-checking
      tabs
+     terraform
+     (terraform :variables
+                terraform-auto-format-on-save t
+                terraform-backend 'lsp)
      treemacs
      typescript
      (typescript :variables
                  typescript-indent-level 2
                  typescript-insert-and-indent t)
      ;; unicode-fonts
-   	 ;; (unicode-fonts :variables unicode-fonts-force-multi-color-on-mac t)
+     ;; (unicode-fonts :variables unicode-fonts-force-multi-color-on-mac t)
      vue
      (vue :variables vue-backend 'dumb)
      web-beautify
@@ -623,18 +629,18 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
   (use-package emacs
-  ;; Display function names
-  :config (which-function-mode +1)
+    ;; Display function names
+    :config (which-function-mode +1)
 
-  ;; Set a Japanese locale (May not be necassary
-  (set-language-environment "Japanese")
-  (prefer-coding-system 'utf-8)
-	(set-file-name-coding-system 'utf-8)
-	(set-keyboard-coding-system 'utf-8)
- 	(set-terminal-coding-system 'utf-8)
- 	(set-default 'buffer-file-coding-system 'utf-8)
-  (set-charset-priority 'ascii 'unicode)
-  (set-coding-system-priority 'utf-8))
+    ;; Set a Japanese locale (May not be necassary
+    (set-language-environment "Japanese")
+    (prefer-coding-system 'utf-8)
+    (set-file-name-coding-system 'utf-8)
+    (set-keyboard-coding-system 'utf-8)
+    (set-terminal-coding-system 'utf-8)
+    (set-default 'buffer-file-coding-system 'utf-8)
+    (set-charset-priority 'ascii 'unicode)
+    (set-coding-system-priority 'utf-8))
 
   ;; Display icons next to buffer names
   ;; (add-to-list 'load-path "~/.emacs.d/plugins/all-the-icons/")
@@ -648,9 +654,9 @@ before packages are loaded."
   ;; Transparency
   ;; (spacemacs/enable-transparency)
   (defun user-custom//enable-frame-transparency (frame)
-  (spacemacs/enable-transparency frame
-                                 (cons dotspacemacs-active-transparency
-                                       dotspacemacs-inactive-transparency)))
+    (spacemacs/enable-transparency frame
+                                   (cons dotspacemacs-active-transparency
+                                         dotspacemacs-inactive-transparency)))
   (user-custom//enable-frame-transparency nil)
   (add-hook 'after-make-frame-functions
             #'user-custom//enable-frame-transparency)
@@ -683,8 +689,8 @@ before packages are loaded."
   ;; Python mode
   (add-hook 'python-mode-hook
             (lambda ()
-            '(flycheck-add-next-checker 'python-flake8)
-            'jedi:setup))
+              '(flycheck-add-next-checker 'python-flake8)
+              'jedi:setup))
   (use-package importmagic
     :ensure t
     :config
@@ -715,6 +721,10 @@ before packages are loaded."
   ;;           (lambda ()
   ;;             (setq sqlind-indentation-offsets-alist
   ;;                   my-sql-indentation-offsets-alist)))
+
+  ;; Google Cloud
+  ;; BigQuery
+  (add-to-list 'load-path "~/.emacs.d/plugins/bigquery-mode/")
 
   ;; Java
   (setq java-indent-level 4)
@@ -751,47 +761,47 @@ before packages are loaded."
 This is an auto-generated function, do not modify its content directly, use
 Emacs customize menu instead.
 This function is called at the very end of Spacemacs initialization."
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(company-quickhelp-color-background "#4F4F4F")
- '(company-quickhelp-color-foreground "#DCDCCC")
- '(ein:output-area-inlined-images t)
- '(evil-want-Y-yank-to-eol nil)
- '(fci-rule-color "#383838")
- '(helm-completion-style 'helm)
- '(nrepl-message-colors
-   '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
- '(package-selected-packages
-   '(graphql-mode tide typescript-mode envrc wfnames consult sql-indent elisp-def package-lint inspector code-cells load-env-vars pylookup all-the-icons-ivy-rich all-the-icons-ivy all-the-icons-dired unicode-fonts ucs-utils font-utils persistent-soft list-utils csv-mode avy-migemo ddskk cdb ccc evil-tutor-ja japanese-holidays migemo pangu-spacing company-emoji emoji-cheat-sheet-plus emojify osx-location rase sunshine theme-changer centaur-tabs lsp-docker lsp-latex company-reftex math-symbol-lists company-auctex auctex pydoc lsp-ui lsp-origami origami lsp-java helm-lsp ccls vmd-mode sqlup-mode pdf-view-restore pdf-tools counsel-tramp insert-shebang flycheck-bashate fish-mode company-shell dockerfile-mode docker tablist docker-tramp aio direnv mvn meghanada maven-test-mode groovy-mode groovy-imports pcache ein helm-ispell yasnippet-snippets treemacs-magit smeargle helm-gitignore helm-git-grep helm-company helm-c-yasnippet gitignore-templates gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ fringe-helper git-gutter+ fuzzy forge yaml magit ghub closql emacsql-sqlite emacsql treepy magit-section git-commit with-editor flyspell-correct-helm flyspell-correct flycheck-rust flycheck-pos-tip company-web web-completion-data browse-at-remote auto-yasnippet auto-dictionary ac-ispell auto-complete yaml-mode tern npm-mode nodejs-repl livid-mode skewer-mode js2-refactor yasnippet multiple-cursors js2-mode js-doc import-js grizzl add-node-modules-path yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry transient pippel pipenv pyvenv pip-requirements nose lsp-python-ms lsp-pyright live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-gtags helm-cscope xcscope ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode cython-mode counsel-gtags counsel swiper ivy company-anaconda company blacken anaconda-mode pythonic ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line))
- '(vc-annotate-background "#2B2B2B")
- '(vc-annotate-color-map
-   '((20 . "#BC8383")
-     (40 . "#CC9393")
-     (60 . "#DFAF8F")
-     (80 . "#D0BF8F")
-     (100 . "#E0CF9F")
-     (120 . "#F0DFAF")
-     (140 . "#5F7F5F")
-     (160 . "#7F9F7F")
-     (180 . "#8FB28F")
-     (200 . "#9FC59F")
-     (220 . "#AFD8AF")
-     (240 . "#BFEBBF")
-     (260 . "#93E0E3")
-     (280 . "#6CA0A3")
-     (300 . "#7CB8BB")
-     (320 . "#8CD0D3")
-     (340 . "#94BFF3")
-     (360 . "#DC8CC3")))
- '(vc-annotate-very-old-color "#DC8CC3")
- '(warning-suppress-types '((use-package))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(highlight-parentheses-highlight ((nil (:weight ultra-bold))) t))
-)
+  (custom-set-variables
+   ;; custom-set-variables was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(company-quickhelp-color-background "#4F4F4F")
+   '(company-quickhelp-color-foreground "#DCDCCC")
+   '(ein:output-area-inlined-images t)
+   '(evil-want-Y-yank-to-eol nil)
+   '(fci-rule-color "#383838")
+   '(helm-completion-style 'helm)
+   '(nrepl-message-colors
+     '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
+   '(package-selected-packages
+     '(go-eldoc go-fill-struct go-gen-test go-guru go-impl go-rename go-tag go-mode godoctor company-terraform jedi jedi-core python-environment terraform-mode hcl-mode graphql-mode tide typescript-mode envrc wfnames consult sql-indent elisp-def package-lint inspector code-cells load-env-vars pylookup all-the-icons-ivy-rich all-the-icons-ivy all-the-icons-dired unicode-fonts ucs-utils font-utils persistent-soft list-utils csv-mode avy-migemo ddskk cdb ccc evil-tutor-ja japanese-holidays migemo pangu-spacing company-emoji emoji-cheat-sheet-plus emojify osx-location rase sunshine theme-changer centaur-tabs lsp-docker lsp-latex company-reftex math-symbol-lists company-auctex auctex pydoc lsp-ui lsp-origami origami lsp-java helm-lsp ccls vmd-mode sqlup-mode pdf-view-restore pdf-tools counsel-tramp insert-shebang flycheck-bashate fish-mode company-shell dockerfile-mode docker tablist docker-tramp aio direnv mvn meghanada maven-test-mode groovy-mode groovy-imports pcache ein helm-ispell yasnippet-snippets treemacs-magit smeargle helm-gitignore helm-git-grep helm-company helm-c-yasnippet gitignore-templates gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ fringe-helper git-gutter+ fuzzy forge yaml magit ghub closql emacsql-sqlite emacsql treepy magit-section git-commit with-editor flyspell-correct-helm flyspell-correct flycheck-rust flycheck-pos-tip company-web web-completion-data browse-at-remote auto-yasnippet auto-dictionary ac-ispell auto-complete yaml-mode tern npm-mode nodejs-repl livid-mode skewer-mode js2-refactor yasnippet multiple-cursors js2-mode js-doc import-js grizzl add-node-modules-path yapfify stickyfunc-enhance sphinx-doc pytest pyenv-mode py-isort poetry transient pippel pipenv pyvenv pip-requirements nose lsp-python-ms lsp-pyright live-py-mode importmagic epc ctable concurrent deferred helm-pydoc helm-gtags helm-cscope xcscope ggtags dap-mode lsp-treemacs bui lsp-mode markdown-mode cython-mode counsel-gtags counsel swiper ivy company-anaconda company blacken anaconda-mode pythonic ws-butler writeroom-mode winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package undo-tree treemacs-projectile treemacs-persp treemacs-icons-dired toc-org symon symbol-overlay string-inflection string-edit spaceline-all-the-icons restart-emacs request rainbow-delimiters quickrun popwin pcre2el password-generator paradox overseer org-superstar open-junk-file nameless multi-line macrostep lorem-ipsum link-hint indent-guide hybrid-mode hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-xref helm-themes helm-swoop helm-purpose helm-projectile helm-org helm-mode-manager helm-make helm-ls-git helm-flx helm-descbinds helm-ag google-translate golden-ratio font-lock+ flycheck-package flycheck-elsa flx-ido fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-collection evil-cleverparens evil-args evil-anzu eval-sexp-fu emr elisp-slime-nav editorconfig dumb-jump drag-stuff dotenv-mode dired-quick-sort diminish define-word column-enforce-mode clean-aindent-mode centered-cursor-mode auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line))
+   '(vc-annotate-background "#2B2B2B")
+   '(vc-annotate-color-map
+     '((20 . "#BC8383")
+       (40 . "#CC9393")
+       (60 . "#DFAF8F")
+       (80 . "#D0BF8F")
+       (100 . "#E0CF9F")
+       (120 . "#F0DFAF")
+       (140 . "#5F7F5F")
+       (160 . "#7F9F7F")
+       (180 . "#8FB28F")
+       (200 . "#9FC59F")
+       (220 . "#AFD8AF")
+       (240 . "#BFEBBF")
+       (260 . "#93E0E3")
+       (280 . "#6CA0A3")
+       (300 . "#7CB8BB")
+       (320 . "#8CD0D3")
+       (340 . "#94BFF3")
+       (360 . "#DC8CC3")))
+   '(vc-annotate-very-old-color "#DC8CC3")
+   '(warning-suppress-types '((use-package))))
+  (custom-set-faces
+   ;; custom-set-faces was added by Custom.
+   ;; If you edit it by hand, you could mess it up, so be careful.
+   ;; Your init file should contain only one such instance.
+   ;; If there is more than one, they won't work right.
+   '(highlight-parentheses-highlight ((nil (:weight ultra-bold))) t))
+  )
