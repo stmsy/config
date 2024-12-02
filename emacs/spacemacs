@@ -59,7 +59,9 @@ This function should only modify configuration layer settings."
                   geolocation-enable-location-service t
                   geolocation-enable-weather-forecast t)
      go
+     (go :variables go-tab-width 4)
      (go :variables go-backend 'lsp)
+     (go :variables go-format-before-save t)
      graphql
      helm
      html
